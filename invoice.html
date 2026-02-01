@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - VAVH Studio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #8EB69B 0%, #DAF1DE 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0B2B26 0%, #163832 100%);
+            color: white;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .company-info h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .company-info p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 3px 0;
+        }
+
+        .logo-area {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #163832;
+            font-size: 18px;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .form-section {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: Arial, sans-serif;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: #235347;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .products-section {
+            margin-top: 30px;
+        }
+
+        .product-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: #163832;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .btn-success {
+            background: #235347;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-download {
+            background: #0B2B26;
+            color: white;
+        }
+
+        .button-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .payment-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .payment-section h3 {
+            color: #163832;
+            margin-bottom: 15px;
+        }
+
+        #onlinePaymentDetails {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .invoice-preview {
+            margin-top: 40px;
+            padding: 60px;
+            display: none;
+            background: white;
+        }
+
+        .invoice-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 50px;
+        }
+
+        .invoice-logo h1 {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #0B2B26;
+            margin-bottom: 5px;
+        }
+
+        .invoice-title-right {
+            text-align: right;
+        }
+
+        .invoice-title-right h2 {
+            font-size: 48px;
+            font-weight: 900;
+            color: #000;
+            margin-bottom: 5px;
+        }
+
+        .invoice-title-right p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .invoice-label {
+            display: inline-block;
+            background: #FF8C42;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .client-details {
+            margin: 40px 0;
+        }
+
+        .client-details h3 {
+            color: #FF8C42;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .client-details p {
+            font-size: 16px;
+            color: #000;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+        }
+
+        .invoice-table thead {
+            background: #f5f5f5;
+        }
+
+        .invoice-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            color: #000;
+            border-bottom: 3px solid #000;
+            font-size: 14px;
+        }
+
+        .invoice-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .invoice-table tbody tr:last-child td {
+            border-bottom: 3px solid #000;
+        }
+
+        .summary-section {
+            margin: 30px 0;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .summary-box {
+            width: 400px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 16px;
+        }
+
+        .summary-row.highlight {
+            color: #FF8C42;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid #000;
+            padding-top: 20px;
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .summary-row.total .amount {
+            color: #FF8C42;
+        }
+
+        .payment-info {
+            margin: 40px 0;
+        }
+
+        .payment-info h3 {
+            font-size: 18px;
+            font-weight: 900;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .payment-info p {
+            font-size: 16px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .payment-details-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .invoice-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .thank-you h2 {
+            font-size: 32px;
+            font-family: 'Brush Script MT', cursive;
+            margin-bottom: 10px;
+        }
+
+        .thank-you h3 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .thank-you p {
+            font-size: 18px;
+            font-style: italic;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .footer-address {
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .invoice-actions {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .form-section {
+                display: none;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .header {
+                display: none;
+            }
+            .invoice-preview {
+                display: block !important;
+                padding: 40px;
+            }
+            .button-group, .invoice-actions {
+                display: none !important;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="company-info">
+                <h1>V.A.V.H STUDIO</h1>
+                <p>📞 01813162478</p>
+                <p>✉️ vavhstudio.gmail.com</p>
+                <p>📍 Khilkhet, Dhaka</p>
+            </div>
+            <div class="logo-area">
+                <img src="/invoice genarate/vavh.png" alt="vavh studio" style="max-width: 10%; max-height: 100%;">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 style="margin-bottom: 30px; color: #0B2B26;">Generate Invoice</h2>
+
+            <div class="form-group">
+                <label>Invoice Type</label>
+                <select id="invoiceType" onchange="toggleFields()">
+                    <option value="">Select Type</option>
+                    <option value="purchase">Purchase (From Supplier)</option>
+                    <option value="sale">Sale (To Client)</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="clientSupplierGroup" style="display: none;">
+                <label id="selectLabel">Select Client/Supplier</label>
+                <select id="clientSupplier" onchange="fillDetails()">
+                    <option value="">Select...</option>
+                </select>
+                <button class="btn btn-secondary" onclick="showAddForm()" style="margin-top: 10px;">+ Add New</button>
+            </div>
+
+            <div id="detailsForm" style="display: none;">
+                <div class="row">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="name" placeholder="Enter name">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="phone" placeholder="Enter phone number">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="address" placeholder="Enter address">
+                </div>
+
+                <div class="form-group" id="companyGroup" style="display: none;">
+                    <label>Company Name</label>
+                    <input type="text" id="company" placeholder="Enter company name">
+                </div>
+
+                <div class="products-section">
+                    <h3 style="margin-bottom: 20px; color: #163832;">Products</h3>
+                    <div id="productsList"></div>
+                    <button class="btn btn-primary" onclick="addProduct()">+ Add Product</button>
+                </div>
+
+                <div class="row" style="margin-top: 30px;">
+                    <div class="form-group">
+                        <label>Discount (৳)</label>
+                        <input type="number" id="discount" placeholder="Enter discount amount" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Charge (৳)</label>
+                        <input type="number" id="delivery" placeholder="Enter delivery charge" min="0" value="0">
+                    </div>
+                </div>
+
+                <div class="payment-section">
+                    <h3>Payment Method</h3>
+                    <div class="form-group">
+                        <label>Select Payment Method</label>
+                        <select id="paymentMethod" onchange="togglePaymentDetails()">
+                            <option value="cod">Cash on Delivery</option>
+                            <option value="online">Online Payment</option>
+                        </select>
+                    </div>
+
+                    <div id="onlinePaymentDetails" style="display: none;">
+                        <div class="form-group">
+                            <label>Payment Gateway</label>
+                            <select id="paymentGateway" onchange="toggleGatewayFields()">
+                                <option value="">Select Gateway</option>
+                                <option value="bkash">Bkash</option>
+                                <option value="nagad">Nagad</option>
+                                <option value="bank">Bank Transfer</option>
+                            </select>
+                        </div>
+
+                        <div id="gatewayFields" style="display: none;">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label id="labelSenderName">Sender Name</label>
+                                    <input type="text" id="senderName" placeholder="Enter sender name">
+                                </div>
+                                <div class="form-group">
+                                    <label id="labelAccountNumber">Account Number</label>
+                                    <input type="text" id="accountNumber" placeholder="Enter account number">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <label>Transaction ID</label>
+                                    <input type="text" id="trxId" placeholder="Enter transaction ID">
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount (৳)</label>
+                                    <input type="number" id="paidAmount" placeholder="Enter paid amount" min="0">
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="bankNameGroup" style="display: none;">
+                                <label>Bank Name</label>
+                                <input type="text" id="bankName" placeholder="Enter bank name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-success" onclick="generateInvoice()">Generate Invoice</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="invoice-preview" id="invoicePreview">
+            <!-- Customer Copy -->
+            <div id="customerCopy">
+                <div class="invoice-label">CUSTOMER COPY</div>
+                <div class="invoice-top">
+                    <div class="invoice-logo">
+                        <h1>VAVH<br>STUDIO</h1>
+                    </div>
+                    <div class="invoice-title-right">
+                        <h2>INVOICE</h2>
+                        <p id="invoiceDateCustomer"></p>
+                    </div>
+                </div>
+
+                <div class="client-details">
+                    <h3 id="clientSupplierTitleCustomer"></h3>
+                    <p id="clientSupplierNameCustomer"></p>
+                    <p id="clientSupplierPhoneCustomer"></p>
+                    <p id="clientSupplierAddressCustomer"></p>
+                    <p id="clientSupplierCompanyCustomer"></p>
+                </div>
+
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Details</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceTableBodyCustomer"></tbody>
+                </table>
+
+                <div class="summary-section">
+                    <div class="summary-box">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="subtotalAmountCustomer">৳0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Discount</span>
+                            <span id="discountAmountCustomer">৳0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery Charge</span>
+                            <span id="deliveryAmountCustomer">৳0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span class="amount" id="totalAmountCustomer">৳0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-info">
+                    <h3>PAYMENT INFORMATION</h3>
+                    <p id="paymentMethodTextCustomer">Cash On Delivery</p>
+                </div>
+
+                <div class="invoice-footer">
+                    <div class="thank-you">
+                        <h2>"Thank You"</h2>
+                        <h3>Thank you!</h3>
+                        <p>for your purchase!</p>
+                    </div>
+                    <div class="footer-address">
+                        <strong>VAVH Studio</strong><br>
+                        Khilkhet, Dhaka<br>
+                        Bangladesh
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-break"></div>
+
+            <!-- Studio Copy -->
+            <div id="studioCopy">
+                <div class="invoice-label" style="background: #0B2B26;">VAVH STUDIO COPY</div>
+                <div class="invoice-top">
+                    <div class="invoice-logo">
+                        <h1>VAVH<br>STUDIO</h1>
+                    </div>
+                    <div class="invoice-title-right">
+                        <h2>INVOICE</h2>
+                        <p id="invoiceDateStudio"></p>
+                    </div>
+                </div>
+
+                <div class="client-details">
+                    <h3 id="clientSupplierTitleStudio"></h3>
+                    <p id="clientSupplierNameStudio"></p>
+                    <p id="clientSupplierPhoneStudio"></p>
+                    <p id="clientSupplierAddressStudio"></p>
+                    <p id="clientSupplierCompanyStudio"></p>
+                </div>
+
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Details</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceTableBodyStudio"></tbody>
+                </table>
+
+                <div class="summary-section">
+                    <div class="summary-box">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="subtotalAmountStudio">৳0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Discount</span>
+                            <span id="discountAmountStudio">৳0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery Charge</span>
+                            <span id="deliveryAmountStudio">৳0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span class="amount" id="totalAmountStudio">৳0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-info">
+                    <h3>PAYMENT INFORMATION</h3>
+                    <p id="paymentMethodTextStudio">Cash On Delivery</p>
+                    <div id="paymentDetailsStudio"></div>
+                </div>
+
+                <div class="invoice-footer">
+                    <div class="thank-you">
+                        <h2>"Thank You"</h2>
+                        <h3>Thank you!</h3>
+                        <p>for your purchase!</p>
+                    </div>
+                    <div class="footer-address">
+                        <strong>VAVH Studio</strong><br>
+                        Khilkhet, Dhaka<br>
+                        Bangladesh
+                    </div>
+                </div>
+            </div>
+
+            <div class="invoice-actions">
+                <div class="button-group" style="justify-content: center;">
+                    <button class="btn btn-download" onclick="window.print()">📥 Download Both Invoices</button>
+                    <button class="btn btn-primary" onclick="window.print()">🖨️ Print Both Invoices</button>
+                    <button class="btn btn-secondary" onclick="resetForm()">🔄 New Invoice</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- This is a comment -->
+    <script>
+        var clients = [];
+        var suppliers = [];
+        var productCount = 0;
+
+        function toggleFields() {
+            var type = document.getElementById('invoiceType').value;
+            var group = document.getElementById('clientSupplierGroup');
+            var label = document.getElementById('selectLabel');
+            var companyGroup = document.getElementById('companyGroup');
+
+            if (type) {
+                group.style.display = 'block';
+                if (type === 'sale') {
+                    label.textContent = 'Select Client';
+                    populateDropdown(clients);
+                    companyGroup.style.display = 'none';
+                } else {
+                    label.textContent = 'Select Supplier';
+                    populateDropdown(suppliers);
+                    companyGroup.style.display = 'block';
+                }
+            } else {
+                group.style.display = 'none';
+                document.getElementById('detailsForm').style.display = 'none';
+            }
+        }
+
+        function populateDropdown(list) {
+            var select = document.getElementById('clientSupplier');
+            select.innerHTML = '<option value="">Select...</option>';
+            for (var i = 0; i < list.length; i++) {
+                var option = document.createElement('option');
+                option.value = i;
+                option.textContent = list[i].name;
+                select.appendChild(option);
+            }
+        }
+
+        function showAddForm() {
+            document.getElementById('detailsForm').style.display = 'block';
+            document.getElementById('name').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('company').value = '';
+            document.getElementById('clientSupplier').value = '';
+            document.getElementById('productsList').innerHTML = '';
+            document.getElementById('discount').value = '0';
+            document.getElementById('delivery').value = '0';
+            productCount = 0;
+            addProduct();
+        }
+
+        function fillDetails() {
+            var type = document.getElementById('invoiceType').value;
+            var index = document.getElementById('clientSupplier').value;
+            
+            if (index === '') return;
+
+            var list = type === 'sale' ? clients : suppliers;
+            var selected = list[index];
+
+            document.getElementById('name').value = selected.name;
+            document.getElementById('phone').value = selected.phone;
+            document.getElementById('address').value = selected.address;
+            if (selected.company) {
+                document.getElementById('company').value = selected.company;
+            }
+
+            document.getElementById('detailsForm').style.display = 'block';
+            if (productCount === 0) addProduct();
+        }
+
+        function togglePaymentDetails() {
+            var method = document.getElementById('paymentMethod').value;
+            var details = document.getElementById('onlinePaymentDetails');
+            
+            if (method === 'online') {
+                details.style.display = 'block';
+            } else {
+                details.style.display = 'none';
+            }
+        }
+
+        function toggleGatewayFields() {
+            var gateway = document.getElementById('paymentGateway').value;
+            var fields = document.getElementById('gatewayFields');
+            var bankGroup = document.getElementById('bankNameGroup');
+            var labelAccount = document.getElementById('labelAccountNumber');
+            
+            if (gateway) {
+                fields.style.display = 'block';
+                
+                if (gateway === 'bank') {
+                    bankGroup.style.display = 'block';
+                    labelAccount.textContent = 'Account/Card Number';
+                } else {
+                    bankGroup.style.display = 'none';
+                    labelAccount.textContent = 'Account Number';
+                }
+            } else {
+                fields.style.display = 'none';
+            }
+        }
+
+        function addProduct() {
+            productCount++;
+            var productDiv = document.createElement('div');
+            productDiv.className = 'product-item';
+            productDiv.id = 'product-' + productCount;
+            
+            var removeButton = '';
+            if (productCount > 1) {
+                removeButton = '<button class="remove-btn" onclick="removeProduct(' + productCount + ')">Remove</button>';
+            }
+            
+            productDiv.innerHTML = removeButton +
+                '<div class="row">' +
+                    '<div class="form-group">' +
+                        '<label>Product Name</label>' +
+                        '<input type="text" id="productName-' + productCount + '" placeholder="Enter product name">' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>SKU</label>' +
+                        '<input type="text" id="sku-' + productCount + '" placeholder="Enter SKU">' +
+                    '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                    '<div class="form-group">' +
+                        '<label>Quantity</label>' +
+                        '<input type="number" id="quantity-' + productCount + '" placeholder="Enter quantity" min="1">' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Price (৳)</label>' +
+                        '<input type="number" id="price-' + productCount + '" placeholder="Enter price" min="0">' +
+                    '</div>' +
+                '</div>';
+            
+            document.getElementById('productsList').appendChild(productDiv);
+        }
+
+        function removeProduct(id) {
+            var element = document.getElementById('product-' + id);
+            if (element) {
+                element.remove();
+            }
+        }
+
+        function generateInvoice() {
+            var type = document.getElementById('invoiceType').value;
+            var name = document.getElementById('name').value;
+            var phone = document.getElementById('phone').value;
+            var address = document.getElementById('address').value;
+            var company = document.getElementById('company').value;
+
+            if (!name || !phone || !address) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            var index = document.getElementById('clientSupplier').value;
+            if (index === '') {
+                var newEntry = { name: name, phone: phone, address: address };
+                if (type === 'purchase') {
+                    newEntry.company = company;
+                    suppliers.push(newEntry);
+                } else {
+                    clients.push(newEntry);
+                }
+            }
+
+            var title = type === 'sale' ? 'Client Details' : 'Supplier Details';
+            
+            // Customer Copy
+            document.getElementById('clientSupplierTitleCustomer').textContent = title;
+            document.getElementById('clientSupplierNameCustomer').textContent = name;
+            document.getElementById('clientSupplierPhoneCustomer').textContent = phone;
+            document.getElementById('clientSupplierAddressCustomer').textContent = address;
+            document.getElementById('clientSupplierCompanyCustomer').textContent = company || '';
+
+            // Studio Copy
+            document.getElementById('clientSupplierTitleStudio').textContent = title;
+            document.getElementById('clientSupplierNameStudio').textContent = name;
+            document.getElementById('clientSupplierPhoneStudio').textContent = phone;
+            document.getElementById('clientSupplierAddressStudio').textContent = address;
+            document.getElementById('clientSupplierCompanyStudio').textContent = company || '';
+
+            var tbodyCustomer = document.getElementById('invoiceTableBodyCustomer');
+            var tbodyStudio = document.getElementById('invoiceTableBodyStudio');
+            tbodyCustomer.innerHTML = '';
+            tbodyStudio.innerHTML = '';
+            var subtotal = 0;
+
+            for (var i = 1; i <= productCount; i++) {
+                var productNameEl = document.getElementById('productName-' + i);
+                if (!productNameEl) continue;
+
+                var productName = productNameEl.value;
+                var sku = document.getElementById('sku-' + i).value;
+                var quantity = document.getElementById('quantity-' + i).value;
+                var price = document.getElementById('price-' + i).value;
+
+                if (productName && quantity && price) {
+                    var lineTotal = quantity * price;
+                    subtotal += lineTotal;
+
+                    var rowHTML = '<td><strong>' + productName + '</strong></td>' +
+                        '<td>' + sku + '</td>' +
+                        '<td>' + quantity + '</td>' +
+                        '<td>৳' + parseFloat(price).toFixed(2) + '</td>' +
+                        '<td>৳' + lineTotal.toFixed(2) + '</td>';
+
+                    var rowCustomer = tbodyCustomer.insertRow();
+                    rowCustomer.innerHTML = rowHTML;
+                    
+                    var rowStudio = tbodyStudio.insertRow();
+                    rowStudio.innerHTML = rowHTML;
+                }
+            }
+
+            var discount = parseFloat(document.getElementById('discount').value) || 0;
+            var delivery = parseFloat(document.getElementById('delivery').value) || 0;
+            var total = subtotal - discount + delivery;
+
+            // Customer Copy
+            document.getElementById('subtotalAmountCustomer').textContent = '৳' + subtotal.toFixed(2);
+            document.getElementById('discountAmountCustomer').textContent = '৳' + discount.toFixed(2);
+            document.getElementById('deliveryAmountCustomer').textContent = '৳' + delivery.toFixed(2);
+            document.getElementById('totalAmountCustomer').textContent = '৳' + total.toFixed(2);
+
+            // Studio Copy
+            document.getElementById('subtotalAmountStudio').textContent = '৳' + subtotal.toFixed(2);
+            document.getElementById('discountAmountStudio').textContent = '৳' + discount.toFixed(2);
+            document.getElementById('deliveryAmountStudio').textContent = '৳' + delivery.toFixed(2);
+            document.getElementById('totalAmountStudio').textContent = '৳' + total.toFixed(2);
+
+            var paymentMethod = document.getElementById('paymentMethod').value;
+            var paymentText = paymentMethod === 'cod' ? 'Cash On Delivery' : 'Online Payment';
+            
+            document.getElementById('paymentMethodTextCustomer').textContent = paymentText;
+            document.getElementById('paymentMethodTextStudio').textContent = paymentText;
+
+            // Payment details (only for studio copy)
+            var paymentDetailsDiv = document.getElementById('paymentDetailsStudio');
+            paymentDetailsDiv.innerHTML = '';
+
+            if (paymentMethod === 'online') {
+                var gateway = document.getElementById('paymentGateway').value;
+                var senderName = document.getElementById('senderName').value;
+                var accountNumber = document.getElementById('accountNumber').value;
+                var trxId = document.getElementById('trxId').value;
+                var paidAmount = document.getElementById('paidAmount').value;
+                var bankName = document.getElementById('bankName').value;
+
+                if (gateway) {
+                    var gatewayName = gateway === 'bkash' ? 'Bkash' : gateway === 'nagad' ? 'Nagad' : 'Bank Transfer';
+                    
+                    var detailsHTML = '<div class="payment-details-box">' +
+                        '<p><strong>Gateway:</strong> ' + gatewayName + '</p>' +
+                        '<p><strong>Sender Name:</strong> ' + senderName + '</p>' +
+                        '<p><strong>Account Number:</strong> ' + accountNumber + '</p>';
+                    
+                    if (gateway === 'bank' && bankName) {
+                        detailsHTML += '<p><strong>Bank Name:</strong> ' + bankName + '</p>';
+                    }
+                    
+                    detailsHTML += '<p><strong>Transaction ID:</strong> ' + trxId + '</p>' +
+                        '<p><strong>Paid Amount:</strong> ৳' + parseFloat(paidAmount || 0).toFixed(2) + '</p>' +
+                        '</div>';
+                    
+                    paymentDetailsDiv.innerHTML = detailsHTML;
+                }
+            }
+
+            var today = new Date();
+            var day = today.getDate();
+            var month = today.toLocaleString('default', { month: 'short' });
+            var year = today.getFullYear();
+            var dateStr = day + ' ' + month + ' ' + year;
+            
+            document.getElementById('invoiceDateCustomer').textContent = dateStr;
+            document.getElementById('invoiceDateStudio').textContent = dateStr;
+            
+            document.getElementById('invoicePreview').style.display = 'block';
+            document.getElementById('invoicePreview').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('invoiceType').value = '';
+            document.getElementById('clientSupplierGroup').style.display = 'none';
+            document.getElementById('detailsForm').style.display = 'none';
+            document.getElementById('invoicePreview').style.display = 'none';
+            productCount = 0;
+        }
+    </script>
+</body>
+</html>
